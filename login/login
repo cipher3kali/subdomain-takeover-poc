@@ -1,0 +1,50 @@
+<!-- <div *ngIf="show"> -->
+<mat-grid-list cols="4" rowHeight="310px">
+    <!-- <mat-grid-tile [colspan]=1 [rowspan]=1 style="background-color:lightpink">
+        <div>
+            <h1 align="center">Login </h1>
+            <h4 align="center">Get access to your Wishlist and Recommendation</h4>
+        </div>
+    </mat-grid-tile> -->
+
+    <mat-grid-tile [colspan]=3 [rowspan]=2 style.background="lightblue">
+        <mat-card class="my-card offset-4">
+            <h1 align="center">Login </h1>
+            <mat-card-content>
+                <form class="my-form" [formGroup]="loginForm" (ngSubmit)="login()">
+
+                    <mat-form-field class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input type="text" matInput placeholder="Email" name="contactEmail" required formControlName="contactEmail" tabindex="1">
+
+                        <mat-error *ngIf=loginForm.controls.contactEmail.errors class="text-danger" id="ContactEmailError">Enter valid ContactNo/EmailId</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Password</mat-label>
+                        <input matInput placeholder="Password" formControlName="password"  required name="password" [type]="hide ? 'password' : 'text'" tabindex="2">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide"  tabindex="3">
+                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="loginForm.controls.password.errors?.pattern " class="text-danger" id="PasswordError">Enter valid Password</mat-error>
+                      </mat-form-field>
+
+                </form>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button [disabled]="loginForm.invalid" (click)="login()" color="primary"  tabindex="4">LOGIN</button>
+                <br />
+                <br />
+                <a class="link" (click)="getRegisterPage()" (keyup.enter)="getRegisterPage()" tabindex="5" id="enter_btn">Click here to register</a>
+
+            </mat-card-actions>
+            <div *ngIf="errorMessage!=null" class="text-danger">
+                {{errorMessage}}
+            </div>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+<!-- </div> -->
+
+<!-- <div *ngIf="key">
+    <app-admin></app-admin>
+</div> -->
