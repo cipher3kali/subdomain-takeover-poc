@@ -1,0 +1,1645 @@
+sell.comp.html
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <br>
+            <br>
+            <br>
+            <h4>
+                Instructions to fill the form:
+            </h4>
+            <p>
+                Please provide all the details of your property one by one.Depending upo the values you are given.We eill add your property
+                in our website
+            </p>
+            <img class="responsive img-fluid" src="../../../assets/house.jpg">
+
+        </div>
+
+        <div class="col-md-8">
+            <br>
+            <h5 class="text-center">Post your Property Here!</h5>
+            <mat-tab-group #tabgroup  [selectedIndex]="selectedIndex">
+                <mat-tab label="First Step">
+                    <br>
+                    <form class="my-form" [formGroup]="sellForm">
+                        <mat-form-field class="full-width" appearance="legacy">
+                            <mat-label>Please mention area</mat-label>
+                            <mat-select name="area" required formControlName="area">
+
+                                <mat-option [value]="area" *ngFor="let area of areaArray" (click)="spinnerVal()" >{{area}}</mat-option>
+
+                            </mat-select>
+                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+                        <mat-form-field class="full-width" appearance="legacy">
+                            <mat-label>Property Pincode</mat-label>
+                            <mat-select name="pincode" formControlName="pincode" required>
+                                <mat-option [value]="pin" *ngFor="let pin of pincodeArray" (click)="spinnerVal()" >{{pin}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+                       
+                        <mat-form-field class="full-width" appearance="legacy">
+                            
+                            <mat-select name="propertyOwnership" formControlName="propertyOwnership" required>
+                                <mat-option value="" >You are..</mat-option>
+                                <mat-option value="owner">Owner</mat-option>
+                                <mat-option value="dealer">Dealer</mat-option>
+                                <mat-option value="broker">Broker</mat-option>
+                            </mat-select>
+
+                        </mat-form-field> <br>
+                        <b> Property For?</b>
+                        &nbsp;&nbsp;&nbsp;
+                        <span>
+                            <mat-radio-group arial-label="Select an option" formControlName="propertyType" (change)="spinnerVal()">
+                                <mat-radio-button name="propertyType" value="Sale" required>Sale</mat-radio-button>&nbsp;
+                                <mat-radio-button name="propertyType" value="Rent" required>Rent</mat-radio-button>&nbsp;
+                            </mat-radio-group>
+                        </span><br><br>
+                        <div>
+                           <b> What type of property do you want to post?</b>
+                            <br>
+                            <mat-radio-group arial-label="Select an option" formControlName="buildingType" (change)="spinnerVal()">
+                                <mat-radio-button name="buildingType" value="House" required>
+                                    <mat-icon>house</mat-icon>House</mat-radio-button>&nbsp;
+                                <mat-radio-button name="buildingType" value="Apartment" required>
+                                    <mat-icon>apartment</mat-icon>Apartment</mat-radio-button>&nbsp;
+                            </mat-radio-group>
+
+                        </div>
+
+                        <mat-form-field class="full-width" appearance="legacy">
+                            <input type="number" matInput placeholder="No of Bedrooms" min="0" formControlName="noOfBedrooms" name="noOfBedrooms" required (change)="spinnerVal()">
+                            <mat-icon matSuffix>king_bed</mat-icon>
+                        </mat-form-field>&nbsp;&nbsp;&nbsp;
+
+                        <mat-form-field class="full-width" appearance="legacy">
+                            <input type="number" matInput placeholder="No of Bathrooms" min="0" formControlName="noOfBathrooms" name="noOfBathrooms" required (change)="spinnerVal()">
+                            <mat-icon matSuffix>bathtub</mat-icon>
+                        </mat-form-field>&nbsp;&nbsp;&nbsp;
+
+                        <mat-form-field class="full-width" appearance="legacy">
+                            <input type="number" matInput placeholder="No of Balconies" min="0" formControlName="noOfBalconies" name="noOfBalconies" required (change)="spinnerVal()">
+                            <mat-icon matSuffix>store_mall_directory</mat-icon>
+                        </mat-form-field>
+                        <br>
+
+                        <label>Price:</label>
+                        <mat-slider aria-label="Price" (change)="spinnerVal()" class="priceSlider" thumbLabel [displayWith]="formPriceLabel" step="1000" min="1" max="1000000"
+                            name="price" formControlName="price" required>
+
+                        </mat-slider>
+                        <br>
+                        <button mat-raised-button color="primary" [disabled]="sellForm.invalid" (click)="sell()" matTooltip="Click here to Post Details"
+                        matTooltipPosition="below" matTooltipClass="mat-tooltip">POST</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button mat-raised-button color="accent" [disabled]="sellForm.invalid" (click)="nextStep()">Next</button>
+
+
+                    </form>
+                </mat-tab>
+                <mat-tab label="Second Step">
+                    <br>
+                    <form [formGroup]="sellForm1" class="my-form">
+                        <div><b>Property Status:</b>&nbsp;&nbsp;&nbsp;
+                            <mat-radio-group aria-label="Status" formContolName="transactionType">
+                                <mat-radio-button name="transactionType" value="NEw">Old</mat-radio-button>&nbsp;
+                                <mat-radio-button name="transactionType" value="NEw">New</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <b>Age of Property:</b>&nbsp;&nbsp;&nbsp;
+                        <mat-slider class="ageSlider" thumbLabel [displayWith]="formAgeLabel" tickInterval="1" min="1" max="5" formControlName="ageOfProperty">
+
+                        </mat-slider>
+                        <br>
+                        <mat-form-field class="full-width" appearance="legacy">
+                            <mat-label>Select the availability</mat-label>
+                            <mat-select name="availability" formControlName="availabilityBy">
+                                <mat-option value="Anytime">Anytime</mat-option>
+                                <mat-option value="within 1 weeks">within 1 weeks</mat-option>
+                                <mat-option value="within 2 weeks">within 2 weeks</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div>
+                            <mat-radio-group ariaLabel="furnishType" formControlName="availability">
+                                <mat-radio-button name="availability" value="Ready to move" #move>Ready to move</mat-radio-button>&nbsp;
+                                <mat-radio-button name="availability" value="Under Construction">Under Construction</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div>
+                            <mat-radio-group ariaLabel="furnishedType" formControlName="furnishing">
+                                <mat-radio-button name="furnishing" value="Fully Furnished" *ngIf="move.checked">Fully Furnished</mat-radio-button>&nbsp;
+                                <mat-radio-button name="furnishing" value="Semi Furnished" *ngIf="move.checked">Semi Furnished</mat-radio-button>&nbsp;
+                                <mat-radio-button name="furnishing" value="Unfurnished" *ngIf="move.checked">Unfurnished</mat-radio-button>&nbsp;
+
+
+                            </mat-radio-group>
+                        </div>
+
+                        <mat-slide-toggle #p>Parking</mat-slide-toggle>
+                        <br>
+                        <mat-slide-toggle *ngIf="p.checked" formControlName="noOfOpenParking" value=1>Open Parking</mat-slide-toggle>
+                        <mat-slide-toggle *ngIf="p.checked" formControlName="noOfCoveredParking" value=1>Covered Parking</mat-slide-toggle>
+                        <br>
+                        <label>Area:</label>
+                        <mat-slider class="areaSlider" thumbLabel [displayWith]="formAreaLabel" tickInterval="100" min="1" max="5000" formControlName="propertyArea"></mat-slider>
+                    
+                        <br>
+                        <button mat-raised-button color="primary" (click)="sell()">POST</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button mat-raised-button color="accent"  (click)="nextStep()">Next</button>
+
+                    </form>
+                    <div> If want to add more details go to Third Step</div>
+
+                </mat-tab>
+                <mat-tab label="Third Step" (click)="next=true">
+                    <form [formGroup]="sellForm2" class="my-form">
+                        <br>
+                    
+
+                        <div class="row">
+                            <br>
+          
+                            <div class="col-md-4 offset-1">
+                                <mat-card class="shadow p-3 mb-5 bg-white rounded">
+                                    <mat-slide-toggle formControlName="lifts" #lifts value="lifts.checked">Lifts</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="ac" #ac value="ac.checked">Ac</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="heater" #heater value="heater.checked">Water Heater</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="wifi" #wifi value="wifi.checked">Wifi</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="waterPurifier" #water value="water.checked">Water Purifier</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="maintenenceStaff" #main value="main.checked">Maintenence Staff</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="visitorParking" #visitor value="visitor.checked">Visitor Parking</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="powerBackup" #power value="power.checked">Power Backup</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="fireAlarm" #fire value="fire.checke">Fire Alarm</mat-slide-toggle>
+                                </mat-card>
+
+                            </div>
+                            <div class="col-md-6 offset-1">
+                                <mat-card class="shadow p-3 mb-5 bg-white rounded">
+                                    <mat-slide-toggle formControlName="WaterSupplyFor24Hours" #WaterSupplyFor24Hours value="WaterSupplyFor24Hours">Water Supply For 24 Hours</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="CloseToSchool" #CloseToSchool value="CloseToSchool">Close To School</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="CloseToHospital" #CloseToHospital value="CloseToHospital">Close To Hospital</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="CloseToRailwayStation" #CloseToRailwayStation value="CloseToRailwayStation">Close To Railway Station</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="CloseToBusStand" #CloseToBusStand value="CloseToBusStand">Close To Bus Stand</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="CloseToAirport" #CloseToAirport value="CloseToAirport">Close To Airport</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="CloseToBank" #CloseToBank value="CloseToBank">Close To Bank</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="CloseToPark" #CloseToPark value="CloseToPark">Close To Park</mat-slide-toggle>
+
+                                </mat-card>
+
+                            </div>
+                        </div>
+
+                        <div class="margin"> If want to add more details go to Fourth Step</div>
+                        <br>
+                        <button mat-raised-button color="primary" (click)="sell()">POST</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button mat-raised-button color="accent" (click)="nextStep()">Next</button>
+
+                    </form>
+
+                </mat-tab>
+                <mat-tab label="Fourth Step">
+                    <form [formGroup]="sellForm3" class="my-form">
+                        <br>
+                        <mat-card class="shadow p-3 mb-5 bg-white rounded">
+                            <textarea placeholder="Enter property full address" formControlName="Address" class="textarea" rows="3" cols="70"></textarea>
+                            <br>
+
+                        </mat-card>
+
+
+
+                        <mat-card class="shadow p-3 mb-5 bg-white rounded">
+                            <textarea placeholder="Enter description about property " formControlName="description" class="textarea" rows="3" cols="70"></textarea>
+                            <br>
+
+                        </mat-card>
+                        <button mat-raised-button color="primary" (click)="sell()">POST</button>
+
+                    </form>
+
+                </mat-tab>
+
+                
+            </mat-tab-group>
+
+        </div>
+        <div class="col-md-2">
+                <mat-sidenav mode="side" opened position="end" class="text-center end-sidebar">
+                        <br>
+                        <br>
+                        <br>
+                        <h4>Completion Meter</h4>
+                        <p>Shows how much you fill the form</p>
+                        <div class="example-container">
+                            <mat-progress-spinner class="spin-size" [diameter]="40" color="accent"[mode]="mode" [value]="75"#spin1></mat-progress-spinner>{{spin1.value}}%
+                            <span><mat-progress-spinner class="spin-size" [diameter]="40" color="success"[mode]="mode" value="55"#spin2></mat-progress-spinner>{{spin2.value}}%
+                            <mat-progress-spinner class="spin-size" [diameter]="40" color="accent"[mode]="mode" value="90"#spin3></mat-progress-spinner>{{spin3.value}}%</span>
+                        </div>
+                        <br>
+                        <mat-progress-spinner class="spin-size"  [color]="color"[mode]="mode" [value]="value"#spin4></mat-progress-spinner>
+                        <div *ngIf="spin4.value>0">{{spin4.value}}%</div>
+                        <div *ngIf="spin4.value>99" class="text-success text-center">Congratulations!! you have successfully filled the form</div>
+                </mat-sidenav>
+                
+    
+    
+                
+    
+            </div>
+    </div>
+</div>
+
+sell.ts
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { AppComponent } from '../../app.component';
+import { Location } from '@angular/common'
+import { SellService } from '../sell/sell.service'
+
+@Component({
+  selector: 'app-sell',
+  templateUrl: './sell.component.html',
+  styleUrls: ['./sell.component.css']
+})
+
+export class SellComponent implements OnInit {
+  sellForm: FormGroup;
+  successMessage: string;
+  userId: string;
+  errorMessage: String;
+  sellForm1: FormGroup;
+  sellForm2: FormGroup;
+  sellForm3: FormGroup;
+  areaArray = ["Mandimohalla", "Mysore", "Krishna Rajendra Circle", "Vani Vilas Mohalla", "Gokulam", "Mandi", "Siddhalingapura"]
+  pincodeArray = [57001, 57002, 57003, 57004, 57005, 57006]
+  ownershipArray = ["Owner", "Dealer", "Broker"]
+  next = false;
+  selectedIndex: number = 0;
+
+  //for price slider
+  formatPriceLabel(value: number) {
+    if (value > 10000) {
+      return Math.round(value / 10000) + 'k';
+    }
+    return value
+  }
+  // for age slider
+  formAgeLabel(value: number) {
+    if (value > 1) {
+      return value
+    }
+    return value + "years old property"
+  }
+  //for area slider
+  formAreaLabel(value: number) {
+    if (value > 1) {
+      return value
+    }
+    return value + "sq.feets"
+  }
+
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router, private location: Location, private sellService: SellService, private app: AppComponent) {
+    sessionStorage.setItem("PreviousUrl", sessionStorage.getItem("CurrentUrl"));
+    sessionStorage.setItem("CurrentUrl", this.router.url);
+  }
+
+  ngOnInit() {
+    window.scrollTo(0, 0)
+    this.sellForm = this.fb.group(
+      {
+        area: ['', Validators.required],
+        pincode: ['', Validators.required],
+        buildingType: ['', Validators.required],
+        propertyOwnership: ['', Validators.required],
+        noOfBalconies: ['', Validators.required],
+        noOfBedrooms: ['', Validators.required],
+        noOfBathrooms: ['', Validators.required],
+        price: ['', Validators.required],
+
+        propertyType: ['', Validators.required],
+
+
+      }
+    )
+    this.sellForm1 = this.fb.group({
+      transactionType: [''],
+      ageOfProperty: [''],
+      availabilityBy: [''],
+      availability: [''],
+      furnishing: [''],
+      noOfOpenParking: [''],
+      noOfCoveredParking: [''],
+      propertyArea: [''],
+      imageUrls: [''],
+      extras: ['']
+
+    })
+    this.sellForm2 = this.fb.group({
+      lifts: false,
+      ac: false,
+      heater: false,
+      wifi: false,
+      waterPurifier: false,
+      WaterPurifier: false,
+      maintenenceStaff: false,
+
+      visitorParking: false,
+      powerBackup: false,
+      PowerBackup: false,
+      fireAlarm: false,
+      WaterSupplyFor24Hours: false,
+      CloseToSchool: false,
+      CloseToHospital: false,
+      CloseToRailwayStation: false,
+      CloseToBusStand: false,
+      CloseToAirport: false,
+      CloseToBank: false,
+      CloseToPark: false
+    })
+    this.sellForm3 = this.fb.group({
+      Address: [''],
+      description: ['']
+    })
+
+  }
+  // to open snackbar after the property is added successfully
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+      verticalPosition: 'top',
+      panelClass: ['snackbar-position'],
+      horizontalPosition: "center"
+    })
+  }
+
+
+  // on click of post the user is added to the sellers array
+  roleput() {
+    this.userId = sessionStorage.getItem('userId')
+    this.sellService.roleput(this.userId).subscribe(
+      (success) => {
+      },
+      (failure) => {
+        this.errorMessage = failure.error.message
+      }
+    )
+  }
+
+  //for spinner to indicate the form completion
+  color = 'primary';
+  mode = 'determinate';
+  value = 0
+  flag1 = 0;
+  flag2 = 0;
+  flag3 = 0;
+  flag4 = 0;
+  flag5 = 0;
+  flag6 = 0;
+  flag7 = 0;
+  flag8 = 0;
+  flag9 = 0;
+
+  spinnerVal() {
+    if (this.sellForm.controls.area.valid) {
+      if (this.flag1 == 0) {
+        this.value += 10
+        this.flag1 = 1
+      }
+    }
+
+
+    if (this.sellForm.controls.pincode.valid) {
+      if (this.flag2 == 0) {
+        this.value += 10
+        this.flag2 = 1
+      }
+    }
+
+
+    if (this.sellForm.controls.propertyOwnership.valid) {
+      if (this.flag3 == 0) {
+        this.value += 10
+        this.flag3 = 1
+      }
+    }
+
+
+    if (this.sellForm.controls.propertyType.valid) {
+      if (this.flag4 == 0) {
+        this.value += 10
+        this.flag4 = 1
+      }
+    }
+
+
+    if (this.sellForm.controls.buildingType.valid) {
+      if (this.flag5 == 0) {
+        this.value += 20
+        this.flag5 = 1
+      }
+    }
+
+
+    if (this.sellForm.controls.noOfBedrooms.valid) {
+      if (this.flag6 == 0) {
+        this.value += 20
+        this.flag6 = 1
+      }
+    }
+
+
+    if (this.sellForm.controls.noOfBathrooms.valid) {
+      if (this.flag7 == 0) {
+        this.value += 10
+        this.flag7 = 1
+      }
+    }
+    if (this.sellForm.controls.price.valid) {
+      if (this.flag8 == 0) {
+        this.value += 10
+        this.flag8 = 1
+      }
+    }
+  }
+
+
+  // to add a new property for sale/rent
+  sell() {
+    if (!this.next) {
+      this.sellService.sellProperty(this.sellForm.value).subscribe(
+        (response) => {
+          sessionStorage.setItem("area", response.area)
+          sessionStorage.setItem("pincode", response.pincode)
+          this.openSnackBar('Property added successfully', 'ok')
+
+          if (this.sellForm.value) {
+            this.router.navigate(['/buy'])
+          }
+          this.errorMessage = null
+          this.app.reload()
+        },
+        (errorResponse) => {
+          this.errorMessage = errorResponse.error.message
+          sessionStorage.clear()
+        }
+      )
+    } else {
+      let newObj = {
+        area: this.sellForm.value.area,
+        pincode: this.sellForm.value.pincode,
+        propertyType: this.sellForm.value.propertyType,
+        propertyOwnership: this.sellForm.value.propertyOwnership,
+        buildingType: this.sellForm.value.buildingType,
+        noOfBathrooms: this.sellForm.value.noOfBathrooms,
+        noOfBedrooms: this.sellForm.value.noOfBedrooms,
+        noOfBalconies: this.sellForm.value.noOfBalconies,
+        price: this.sellForm.value.price,
+        furnishing: this.sellForm1.value.furnishing,
+        availability: this.sellForm1.value.availability,
+        lifts: this.sellForm2.value.lifts,
+        ac: this.sellForm2.value.ac,
+        heater: this.sellForm2.value.heater,
+        maintenenceStaff: this.sellForm2.value.maintenenceStaff,
+        wifi: this.sellForm2.value.wifi,
+        fireAlarm: this.sellForm2.value.fireAlarm,
+        WaterSupplyFor24Hours: this.sellForm2.value.WaterSupplyFor24Hours,
+        PowerBackup: this.sellForm2.value.PowerBackup,
+        WaterPurifier: this.sellForm2.value.WaterPurifier,
+        CloseToSchool: this.sellForm2.value.CloseToSchool,
+        CloseToHospital: this.sellForm2.value.CloseToHospital,
+        CloseToRailwayStation: this.sellForm2.value.CloseToRailwayStation,
+        CloseToBusStand: this.sellForm2.value.CloseToBusStand,
+        CloseToAirport: this.sellForm2.value.CloseToAirport,
+        CloseToBank: this.sellForm2.value.CloseToBank,
+        CloseToPark: this.sellForm2.value.CloseToPark,
+        status: this.sellForm1.value.status,
+        Address: this.sellForm3.value.Address,
+        transactionType: this.sellForm1.value.transactionType,
+        ageOfProperty: this.sellForm1.value.ageOfProperty,
+        propertyArea: this.sellForm1.value.propertyArea,
+        noOfCoveredParking: this.sellForm1.value.noOfCoveredParking,
+        noOfOpenParking: this.sellForm1.value.noOfOpenParking,
+        description: this.sellForm3.value.description,
+      }
+      this.sellService.sellProperty(newObj).subscribe(
+        (response) => {
+          sessionStorage.setItem("area", response.area);
+          sessionStorage.setItem("pincode", response.pincode);
+
+          this.openSnackBar('Property added successfully', 'ok');
+
+          if (this.sellForm.value) {
+            this.router.navigate(['/buy'])
+          }
+          this.errorMessage = null
+          this.app.reload()
+        },
+        (errorResponse) => {
+
+          this.errorMessage = errorResponse.error.message
+        }
+      )
+    }
+  }
+  //to direct to next tab on click of next button
+  nextStep() {
+    if (this.selectedIndex != 4) {
+      this.selectedIndex = this.selectedIndex + 1;
+    }
+    this.next = true
+  }
+}
+
+sell service
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { PropertyData } from '../property';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SellService {
+  sellURL="http://localhost:3000/user/sell/"
+  roleurl="http://localhost:3000/user/role/"
+  constructor(private http:HttpClient) { }
+
+  //to add a new property for sale or rent
+  sellProperty(data:any):Observable<any>{
+    let userId=sessionStorage.getItem("userId")
+    return <Observable<any>>this.http.post(this.sellURL+userId,data);
+
+  }
+  //to post the userId as a seller
+  roleput(userId):Observable<any>{
+    return <Observable<any>> this.http.get(this.roleurl+userId)
+  }
+}
+
+
+connection
+
+const { Schema } = require("mongoose");
+const Mongoose = require("mongoose")
+Mongoose.Promise = global.Promise;
+Mongoose.set('useCreateIndex', true)
+const url = "mongodb://localhost:27017/InfyMansions_DB";
+let collection = {}
+
+//user schema 
+const userSchema = Schema({
+    userId: {
+        type: String,
+        required: [true, 'Required field'],
+        unique: [true, 'Id must be unique']
+    },
+    name: {
+        type: String,
+        required: [true, 'Required field'],
+        match: [/^[a-zA-Z]+( )*[a-zA-Z]*( )*[a-zA-Z]+$/, 'Please enter a valid name(name should not contain space at end)']
+    },
+    emailId: {
+        type: String,
+        minLength: [8, "password should have atleast 8 characters "],
+        maxLength: [20, "dont write password overlimit"],
+        required: [true, 'Required field'],
+        unique: [true, 'Id must be unique'],
+        match: [/^[a-z]+[0-9]*@[a-z]+\.([a-z]{2,3})(\.){0,1}([a-z]{0,2})$/, 'Please enter a valid email Id(hint:your@gmail.com)']
+    },
+    contactNo: {
+        type: Number,
+
+        required: [true, 'Required field'],
+
+        match: [/^[6-9][0-9]{9}$/, 'Please enter a valid 10 digit phone number']
+    },
+    city: {
+        type: String
+    },
+    area: String,
+    pincode: {
+
+        type: Number
+       
+    },
+    password:{
+        type: String,
+
+        required: [true, 'Required field']
+
+      
+    },
+     wishlist: []},
+     { collection: "User" });
+
+
+const propertySchema = Schema({
+    propertyId: {
+        type: String,
+        unique: true
+    },
+    sellerId: {
+        type: String,
+        unique: true
+    },
+    buyerId: {
+        type: String
+        , unique: true
+    },
+    pincode: {
+        type: Number,
+
+        required: [true, 'Required field'],
+
+        match: [/^[1-9]{1}[0-9]{5}$/, 'Please enter a valid 6 digit pincode(should start fro 1-9)']
+    },
+    propertyType: {
+        required: [true, 'Required field'],
+        type: String,
+        enum: ['Sale', 'Rent']
+    },
+    propertyOwnership: {
+        required: [true, 'Required field'],
+        type: String
+    },
+    buildingType: {
+        required: [true, 'Required field'],
+        type: String
+    },
+    noOfBathrooms: {
+        required: [true, 'Required field'],
+        type: Number
+        , min: [1, "minimum number of Bathrooms should be 1"]
+    },
+    noOfBedrooms: {
+        required: [true, 'Required field'],
+        type: Number,
+        min: [1, "minimum number of Bedrooms should be 1"]
+    },
+    noOfBalconies: {
+        required: [true, 'Required field'],
+        type: Number,
+        min: [0, "number of Balconies cant be negative"]
+    },
+    furnishing: {
+        type: String,
+        maxLength: [30, "dont write description overlimit"]
+    },
+    availability: {
+        type: String,
+        maxLength: [20, "dont write description overlimit"]
+    },
+    // amenities
+    lifts: Boolean,
+    ac: Boolean,
+    heater: Boolean,
+    maintenenceStaff: Boolean,
+    visitorParking: Boolean,
+    IntercomFacility: Boolean,
+    wifi: Boolean,
+    fireAlarm: Boolean,
+    WaterPurifier: Boolean,
+    PowerBackup: Boolean,
+    // highlights
+    WaterSupplyFor24Hours: Boolean,
+    CloseToSchool: Boolean,
+    CloseToHospital: Boolean,
+    CloseToRailwayStation: Boolean,
+    CloseToBusStand: Boolean,
+    CloseToAirport: Boolean,
+    CloseToBank: Boolean,
+    CloseToPark: Boolean,
+    // other details
+    status: {
+        type: String,
+        maxLength: [300, "dont write description overlimit"]
+    },
+    Address: {
+        type: String,
+        maxLength: [400, "dont write description overlimit"]
+    },
+    price: {
+        required: [true, 'Required field'],
+        type: Number,
+        min: [0, "price can not be negative"]
+    },
+    Advance: {
+        type: Number,
+        min: [0, "advanve cannot be negative"]
+    },
+    transactionType: String,
+    ageOfProperty: {
+        type: String,
+        maxLength: [30, "dont write description overlimit"]
+    },
+    availabilityBy: {
+        type: String,
+        maxLength: [30, "dont write description overlimit"]
+    },
+    totalFloors: {
+        type: Number,
+        min: [0, "total floors cannot be negative"]
+    },
+    PropertyFloor: {
+        type: Number,
+        min: [0, "Property floor cannot be negative"]
+    },
+    propertyArea: {
+        type: Number,
+        min: [0, "property area cannot be negative"]
+    },
+    poojaRoom: {
+        type: Number,
+        min: [0, "pooja room cannot be negative"]
+    },
+    servantRoonm: {
+        type: Number,
+        min: [0, "servant room cannot be negative"]
+    },
+    noofCoveredParking: {
+        type: Number,
+        min: [0, " No of Covered Parking cannot be negative"]
+    },
+    noOfOpenParking: {
+        type: Number,
+        min: [0, "No Of Open Parking cannot be negative"]
+    },
+    description: {
+        type: String,
+        maxLength: [300, "dont write description overlimit"]
+    },
+    imageUrls: String,
+    extras: {
+        type: String,
+        maxLength: [300, "dont write description overlimit"]
+    },
+    status_wishlist: Boolean
+}, { collection: "Property" })
+
+const locationSchema = Schema({
+    propertyIds: [],
+    pincode: Number,
+    area: String,
+    city: String,
+    state: String
+}, { collection: "Location" })
+
+const roleSchema = Schema({
+    registeredUsers: [],
+    buyers: [],
+    sellers: []
+}, { collection: "Role" })
+
+
+collection.getUserCollection = () => {
+    return Mongoose.connect(url, { useNewUrlParser: true }).then((database) => {
+        return database.model('User', userSchema)
+    }).catch(() => {
+        let err = new Error("Could not connect to Database");
+        err.status = 500;
+        throw err;
+    })
+}
+
+collection.getLocationCollection = () => {
+    return Mongoose.connect(url, { useNewUrlParser: true }).then((database) => {
+        return database.model('Location', locationSchema)
+    }).catch(() => {
+        let err = new Error("Could not connect to Database");
+        err.status = 500;
+        throw err;
+    })
+}
+
+collection.getRoleCollection = () => {
+    return Mongoose.connect(url, { useNewUrlParser: true }).then((database) => {
+        return database.model('Role', roleSchema)
+    }).catch(() => {
+        let err = new Error("Could not connect to Database");
+        err.status = 500;
+        throw err;
+    })
+}
+
+
+collection.getPropertyCollection = () => {
+    return Mongoose.connect(url, { useNewUrlParser: true }).then((database) => {
+        return database.model('Property', propertySchema)
+    }).catch(() => {
+        let err = new Error("Could not connect to Database");
+        err.status = 500;
+        throw err;
+    })
+}
+
+module.exports = collection;
+
+
+const userdb = require('../model/userModel');
+const bcrypt = require('bcryptjs')
+const Validator=require('../utilities/Validators')
+let infyMansionService = {}
+//To check whether the user registered if so, then allow him/her to login
+infyMansionService.checkUser = (emailId, password) => {
+    Validator.validateEmail(emailId)
+    Validator.validatePassword(password)
+    return userdb.findUser(emailId).then(userData => {
+        if (userData == null) {
+            let err = new Error("user not available!! Please register");
+            err.status = 404;
+            throw err;
+        } else {
+            if (userData.emailId === emailId) {
+                return bcrypt.compare(password, userData.password).then((res) => {
+                    if (res) {
+                        return userData;
+                    } else {
+                        let err = new Error("Password is Incorrect");
+                        err.status = 404;
+                        throw err;
+
+                    }
+                })
+            }
+            else {
+                let err = new Error("Authentication failed");
+                err.status = 404;
+                throw err;
+            }
+
+        }
+    })
+}
+
+
+//To check while registering that whether the login credential already exist or not.If not allow him/her to register
+infyMansionService.addDetails = (UserObj) => {
+
+    return userdb.findUser(UserObj.emailId, UserObj.contact).then(object => {
+        {
+            if (object != null) {
+                let err = new Error("user already exists with this emailId and contact Number");
+                err.status = 404;
+                throw err;
+            } else {
+                Validator.validateEmail(UserObj.emailId)
+                Validator.validateName(UserObj.name)
+                Validator.validateContactNo(UserObj.contact)
+                Validator.validatePassword(UserObj.password)
+                bcrypt.genSalt(10, function(err, salt) {
+                    bcrypt.hash(UserObj.password, salt, function(err, hash) {
+                        // Store hash in your password DB.
+                       UserObj.password=hash
+                    });
+                });  
+                return userdb.generateId().then((data) => {
+                    UserObj.userId = data;
+                    return userdb.addUser(UserObj).then((data) => {
+                        if (data) {
+                            return data;
+                        }
+                        else {
+                            let err = new Error("Authentication failed!");
+                            err.status = 404;
+                            throw err;
+                        }
+                    })
+                })
+            }
+        }
+    })
+
+}
+//to search the location 
+infyMansionService.search = () => {
+    return userdb.searchLocation().then(object => {
+        {
+            if (object == null) {
+                let err = new Error("no location exists");
+                err.status = 404;
+                throw err;
+            } else {
+                return object;
+
+
+            }
+        }
+    })
+}
+
+
+
+
+//to show the property with respect to location
+infyMansionService.showProperty = () => {
+    return userdb.findProperty().then(result => {
+        if (result == null) {
+            let err = new Error("No property");
+            err.status = 204;
+            throw err;
+        } else {
+            return result;
+        }
+    })
+}
+
+// to view the property
+infyMansionService.viewProperty = (propertyId) => {
+    return userdb.viewProperty(propertyId).then(result => {
+        if (result == null) {
+            let err = new Error("No property");
+            err.status = 204;
+            throw err;
+        } else {
+            return result;
+        }
+    })
+}
+
+
+//to delete data when admin clicks
+infyMansionService.deleteUser = (userId) => {
+    return userdb.deleteUser(userId).then(removedUser => {
+
+        if (removedUser) {
+            return removedUser
+        } else {
+            let err = new Error("User data not deleted")
+            err.status = 502;
+            throw err
+        }
+    })
+}
+
+//to get all users
+infyMansionService.getallUsers = () => {
+    return userdb.getallUsers().then(dataUsers => {
+
+        if (dataUsers != null) {
+            return dataUsers
+        } else {
+            let err = new Error("No user data available")
+            err.status = 404
+            throw err
+        }
+    })
+}
+//to get property data and delete on click
+infyMansionService.deleteUserp = (propertyId) => {
+    return userdb.deleteUserp(propertyId).then(removedUser => {
+        if (removedUser) {
+            return removedUser
+        } else {
+            let err = new Error("Unable to delete property")
+            err.status = 502;
+            throw err
+        }
+    })
+}
+
+//for viewing the profile
+infyMansionService.profile = (userId) => {
+    return userdb.profile(userId).then(data => {
+        if (data) {
+            return data
+        } else {
+            let err = new Error("You have no properties")
+            err.status = 404
+            throw err
+        }
+    })
+}
+
+//for sell
+infyMansionService.addproperty = (propertyObj, userId) => {
+    return userdb.generatePropertyId().then(data => {
+        propertyObj.propertyId = data;
+        let img = data.substr(4, 1)
+        propertyObj.imageUrls = "../../../assets/tiny-house-" + img + ".jpg"
+
+        propertyObj.sellerId = userId;
+        return userdb.addPropertyDetails(propertyObj).then((model) => {
+            if (model) {
+
+                return userdb.updateRoleSellerSchema(userId).then(data2 => {
+                    if (data2) {
+
+                        return model
+                    } else {
+                        let err = new Error("Sorry! this property really exists");
+                        err.status = 404;
+                        throw err;
+
+                    }
+                })
+            } else {
+                let err = new Error("Unable to add property!Try again");
+                err.status = 502;
+                throw err;
+            }
+        })
+
+    })
+}
+//to get buyers
+infyMansionService.buyersget = () => {
+    return userdb.buyersget().then(buyers => {
+        if (buyers) {
+            return buyers
+        } else {
+            let err = new Error("No buyers available");
+            err.status = 404;
+            throw err;
+        }
+    })
+}
+//to get sellers
+infyMansionService.sellersget = () => {
+    return userdb.sellersget().then(sellers => {
+        if (sellers) {
+            return sellers
+        } else {
+            let err = new Error("No sellers available");
+            err.status = 404;
+            throw err;
+        }
+    })
+}
+
+//to get wishlist
+infyMansionService.getWishlist = (userId) => {
+    return userdb.getWishlist(userId).then(wishlist => {
+        if (wishlist != null) {
+            return wishlist
+        } else {
+            let err = new Error("You have no items wishlisted");
+            err.status = 404;
+            throw err;
+        }
+    })
+}
+
+//to add wishlist
+infyMansionService.addWish = (uid, pid, status) => {
+    return userdb.addWish(uid, pid, status).then(added => {
+        if (added) {
+            return added
+        } else {
+            let err = new Error("Couldnt add to wishlist");
+            err.status = 502;
+            throw err;
+        }
+    })
+}
+//to update profile
+infyMansionService.update_p = (name, contact_no, userId) => {
+    return userdb.update_p(name, contact_no, userId).then(updated => {
+        if (updated) {
+            return updated
+        } else {
+            let err = new Error("Could not update profile");
+            err.status = 502;
+            throw err;
+        }
+    })
+}
+
+//to add new seller to role db
+infyMansionService.seller_role = (userId) => {
+    return userdb.seller_role(userId).then(added => {
+        if (added) {
+            return added
+        } else {
+            let err = new Error("Could not update seller details");
+            err.status = 502;
+            throw err;
+        }
+    })
+}
+module.exports = infyMansionService;
+
+
+const express = require('express');
+const router = express.Router();
+const userService = require('../service/userService');
+var bodyParser = require('body-parser');
+const Property =require('../model/property')
+
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
+//To login
+router.post('/login', function (req, res, next) {    
+    let emailId = req.body.emailId;
+    let password = req.body.password;
+    
+    userService.checkUser(emailId, password).then(result => {
+     
+        res.json(result);
+    }).catch(err => next(err));
+})
+
+//to update profile
+router.put('/update_profile/:userId', function (req, res, next) {    
+    let name = req.body.name;
+    let contact_no = req.body.contactNo;
+   
+    userService.update_p(name, contact_no,req.params.userId).then(result => {
+       
+        res.json(result);
+    }).catch(err => next(err));
+})
+
+//to search the property location
+router.get('/search', function (req, res, next) {
+   
+    userService.search().then(result => {
+        res.json(result);
+    }).catch(err => next(err));
+})
+
+//to register the user into the database
+router.post('/register',function(req,res,next){  
+     
+    let userObj=req.body    
+   
+   userService.addDetails(userObj).then(result=>{
+       res.json(result)
+   }).catch(err=>next(err));
+})
+
+
+//to route to buy componenet
+router.get('/buy',function(req,res,next){
+
+    userService.showProperty().then(result=>{
+        res.json(result)
+    }).catch(err=>next(err))
+})
+
+//to route to view the property
+router.get('/view/:propertyId',function(req,res,next){
+    userService.viewProperty(req.params.propertyId).then(result=>{
+        res.json(result)
+    }).catch(err=>next(err))
+})
+
+
+
+//for delete when admin clicks
+router.delete('/delete/:userId',function(req,res,next){
+    let userId=req.params.userId   
+    userService.deleteUser(userId).then(removed=>{
+        res.json({"message":"the deleted user is "+removed})
+    }).catch(err=>next(err))
+
+})
+
+//to get all users
+router.get('/get',function(req,res,next){   
+    userService.getallUsers().then(users=>{       
+        res.send(users)
+    }).catch(err=>next(err))
+})
+
+//properties table delete
+router.delete('/deletep/:propertyId',function(req,res,next){
+    let propertyId=req.params.propertyId
+    userService.deleteUserp(propertyId).then(removed=>{
+        res.json({"message":"the deleted user is "+removed})
+    }).catch(err=>next(err))
+
+})
+
+//for profile
+router.get('/profile/:userId',function(req,res,next){
+    let userId=req.params.userId
+    userService.profile(userId).then(val=>{
+        res.json(val)
+    }).catch(err=>next(err))
+})
+
+//to redirect to  sell component
+router.post('/sell/:userId',function(req,res,next){
+    const propertyObj=new Property(req.body)
+    userService.addproperty(propertyObj,req.params.userId).then(val=>{
+        res.json(val)       
+    }).catch(err=>next(err))
+})
+
+//to get buyers
+router.get('/buyers',function(req,res,next){
+    userService.buyersget().then(buyers=>{
+        res.json(buyers)
+    }).catch(err=>next(err))
+})
+
+//to get sellers
+router.get('/sellers',function(req,res,next){
+    userService.sellersget().then(sellers=>{
+        res.json(sellers)
+    }).catch(err=>next(err))
+})
+
+//to add wishlist
+router.get('/update/:userId/:propertyId/:state',function(req,res,next){
+    let userId=req.params.userId
+    let propertyId=req.params.propertyId
+    let status=req.params.state
+    userService.addWish(userId,propertyId,status).then(added=>{
+        res.json(added)
+    }).catch(err=>next(err))
+})
+
+//to get wishlist
+router.get('/wishlist/:userId',function(req,res,next){
+    let userId=req.params.userId
+    return userService.getWishlist(userId).then(wishlist=>{
+        res.json(wishlist)
+    }).catch(err=>next(err))
+})
+
+//to add seller to roledb
+router.get('/role/:userId',function(req,res,next){
+    let userId=req.params.userId
+    return userService.seller_role(userId).then(added=>{
+        res.json(added)
+    }).catch(err=>next(err))
+})
+
+module.exports = router;
+
+
+const dbModel = require( '../utilities/connection' );
+const userModel = {}
+//To generate userId for new User
+userModel.generateId = () => {
+    return dbModel.getUserCollection().then( ( userModel ) => {
+        return userModel.distinct( "userId" ).then( ( ids ) => {
+            let idarr = ids.map( ( data ) => { return Number( data.slice( 1 ) ) } )
+            let bId = Math.max( ...idarr );
+            return"U" + ( bId + 1 );
+        } )
+    } )
+}
+
+//to generate property id for every new property
+userModel.generatePropertyId=()=>{
+    return dbModel.getPropertyCollection().then((propertyModel)=>{
+        return propertyModel.distinct("propertyId").then((ids)=>{
+            let idarr = ids.map( ( data ) => { return Number( data.slice( 1 ) ) } )
+            let bId = Math.max( ...idarr );
+            return"P" + ( bId + 1 );
+
+        })
+    })
+}
+
+//To check whether the user with conatctNo or emailId exist or not
+userModel.findUser = ( emailId)=> {   
+    return dbModel.getUserCollection().then( model => {       
+        return model.findOne({"emailId": emailId}).then( ( userData )=>{
+            
+            if( userData===null ){
+                return null;
+            } else{               
+                return userData;
+            }
+        } )
+    } )
+}
+
+//to search the location for property
+userModel.searchLocation=()=>{
+    return dbModel.getLocationCollection().then( model => {
+        return model.find().then((location)=>{
+            if( location==null ){
+                return null;
+            } else{               
+                return location;
+            }
+        })
+
+    })
+}
+
+//to accept user details and save it to database
+userModel.addUser=(UserObj)=>{
+    return dbModel.getUserCollection().then(data=>{       
+        return data.create(UserObj).then(added=>{
+            if(added){              
+                return added
+            }else{
+                let err=new Error("User not registered")
+                err.status=404
+                throw err
+            }
+        })
+    })
+}
+
+//to fetch the user details from database
+userModel.searchUser = ( userId )=> {
+    return dbModel.getUserCollection().then( model => {
+        return model.findOne( {"userId": userId},{wishlist:1,_id:0} ).then( ( userData )=>{
+            if( userData.wishlist.length < 1 ){
+                return null
+            } else{
+                return userData.wishlist;
+            }
+        } )
+    } )
+}
+
+//delete data when admin clicks delete
+userModel.deleteUser=(userId)=>{
+    return dbModel.getUserCollection().then(model=>{
+        return model.deleteOne({"userId":userId}).then(data=>{
+            if(data){
+                return dbModel.getPropertyCollection().then(model1=>{
+                    return model1.deleteOne({"sellerId":userId}).then(deleted=>{
+                        if(deleted.nModified>0){
+                            return userId
+                        }else{
+                            return null
+                        }
+                    })
+                })
+            }
+        })
+        })
+}
+
+//to find the property with respect to location
+userModel.findProperty=()=>{
+    return dbModel.getPropertyCollection().then(model=>{
+        return model.find().then(property_Data=>{
+            if(property_Data) return property_Data
+            else return null
+        })
+    })
+}
+//view the selected property
+userModel.viewProperty=(propertyId)=>{
+    return dbModel.getPropertyCollection().then(model=>{
+        return model.findOne({"propertyId":propertyId}).then(property_Data=>{
+            if(property_Data) return property_Data
+            else return null
+        })
+    })
+}
+
+//get all registered users from the userdb
+userModel.getallUsers=()=>{
+    return dbModel.getUserCollection().then(model=>{
+        return model.find().then(user_data=>{
+           
+            if(user_data){
+                return user_data
+            }else{
+                return null
+            }
+        })
+    })
+}
+//to get property table and delete on click
+userModel.deleteUserp=(propertyId)=>{
+    return dbModel.getPropertyCollection().then(model=>{
+        return model.deleteOne({"propertyId":propertyId}).then(data=>{
+           
+            if(data){
+                return propertyId
+            }else{
+                return null
+            }
+        })
+        })
+}
+
+//to display user profile  and display the posted properties
+userModel.profile=(userId)=>{
+    return dbModel.getPropertyCollection().then(model=>{
+        return model.find({"sellerId":userId}).then(data=>{
+            if(data){
+                return data
+            }else{
+                return null
+            }
+        })
+    })
+}
+
+//to add a new property to the property db
+userModel.addPropertyDetails=(propertyObj)=>{
+    return dbModel.getPropertyCollection().then(model=>{
+        return model.create(propertyObj).then(data=>{
+            if(data){
+                return data
+            }else{
+                return null
+            }
+        })
+    })
+}
+
+// to update the registered user,seller,buyer details
+userModel.updateRoleSellerSchema=(userId)=>{
+    return dbModel.getRoleCollection().then(model=>{
+        return model.updateOne({},{$push:{sellers:userId}}).then(data=>{
+            if(data.nModified==1){
+                return data
+            }else{
+                return null
+            }
+        })
+    })
+}
+
+
+//to get buyers from the buyers array in roledb
+userModel.buyersget=()=>{
+    return dbModel.getRoleCollection().then(model=>{       
+        return model.findOne({},{buyers:1,_id:0}).then(buyers1=>{
+            if(buyers1){              
+                return dbModel.getUserCollection().then(model=>{
+                    return model.find({"userId":{$in:buyers1.buyers}}).then(data=>{
+                        if(data){                        
+                            return data
+                        }else{
+                            return null
+                        }
+                    })
+
+                })
+                
+            }else{
+                return null
+            }
+        })
+    })
+}
+
+//to get sellers form the roledb array and view it in the admin profile
+userModel.sellersget=()=>{
+    return dbModel.getRoleCollection().then(model=>{       
+        return model.findOne({},{sellers:1,_id:0}).then(sellers=>{
+            if(sellers){              
+                return dbModel.getUserCollection().then(model=>{
+                    return model.find({"userId":{$in:sellers.sellers}}).then(data=>{
+                        if(data){                           
+                            return data
+                        }else{
+                            return null
+                        }
+                    })
+
+                })
+                
+            }else{
+                return null
+            }
+        })
+    })
+}
+
+//to get wishlisted items from the wishlst array of a user form userdb
+userModel.getWishlist=(userId)=>{
+    return dbModel.getUserCollection().then(model=>{
+        return model.findOne({"userId":userId},{wishlist:1,_id:0}).then(data=>{
+            if(data!=null){
+                return dbModel.getPropertyCollection().then(model=>{
+                    return model.find({propertyId:{$in:data.wishlist}}).then(list=>{
+                        if(list.length>0){
+                            return list
+                        }else{
+                            return null
+                        }
+                    })
+                })
+            }else{
+                return null
+            }
+        })
+    })
+}
+
+//to add a property to the wishlist array 
+userModel.addWish=(uid,pid,status)=>{
+    return dbModel.getUserCollection().then(model=>{
+        if(status==true){
+            return model.findOne({"userId":uid}).then(res1=>{
+                if(res1.wishlist.find(p=>p==pid)){
+                    return "Already in wishlist"
+                }else{
+                    return model.updateOne({"userId":uid},{$push:{wishlist:pid}}).then(data=>{
+                        if(data.nModified>0){
+                            return "Successfully added your property"
+                        }else{
+                            return null
+                        }
+                    })
+                }
+            })
+        }else{
+            return model.updateOne({"userId":uid},{$pull:{wishlist:pid}}).then(data=>{
+                if(data.nModified>0){
+                    return "Successfully removed from wishlist"
+                }else{
+                    return "No such property"
+                }
+            })
+        }
+    })
+}
+userModel.update_p=(name,contact_no,userId)=>{
+    return dbModel.getUserCollection().then(model=>{       
+        return model.updateOne({"userId":userId},{$set:{'name':name,'contactNo':contact_no}}).then(updated=>{
+            if(updated.nModified>0){
+                return updated
+            }else{
+                return null
+            }
+        })
+    })
+}
+
+//to add new sellers to role db
+userModel.seller_role=(userId)=>{
+    return dbModel.getRoleCollection().then(model=>{
+        return model.updateOne({$push:{"sellers":userId}}).then(added=>{
+            if(added.nModified>0){
+                return added
+            }else{
+                return null
+            }
+        })
+    })
+}
+module.exports = userModel;
+
+property
+
+class property{
+    constructor(obj){
+       this.propertyId= obj.propertyId;
+       this.sellerId= obj.sellerId;
+       this.buyerId=obj.buyerId ;
+       this.pincode= obj.pincode;
+       this.propertyType= obj.propertyType;
+       this.propertyOwnership= obj.propertyOwnership;
+       this.buildingType=obj.buildingType;
+       this.noOfBathrooms= obj.noOfBathrooms;
+       this.noOfBedrooms=obj.noOfBedrooms;
+       this.noOfBalconies= obj.noOfBalconies;
+       this.availability=obj.availability;
+    // amenities
+    this.lifts= obj.lifts;
+    this.ac= obj.ac;
+    this.heater=obj.heater;
+    this.maintenenceStaff=obj.maintenenceStaff;
+    this.visitorParking= obj.visitorParking;
+    this.IntercomFacility= obj.IntercomFacility;
+    this.wifi=obj.wifi;
+    this.fireAlarm=obj. fireAlarm;
+    this.WaterPurifier=obj. WaterPurifier;
+    this.PowerBackup= obj.PowerBackup;
+    // highlights
+ this.WaterSupplyFor24Hours=obj. WaterSupplyFor24Hours;
+    this.CloseToSchool= obj.CloseToSchool;
+    this.CloseToHospital= obj.CloseToHospital;
+    this.CloseToRailwayStation= obj.CloseToRailwayStation;
+    this.CloseToBusStand= obj.CloseToBusStand;
+    this.CloseToAirport= obj.CloseToAirport;
+    this.CloseToBank=obj.CloseToBank;
+    this.CloseToPark= obj.CloseToPark;
+    // other details
+    this.status=obj.status;
+    this.Address= obj.Address;
+    this.price=obj.price;
+    this.Advance= obj.Advance;
+    this.transactionType= obj.transactionType;
+    this.ageOfProperty= obj.ageOfProperty;
+    this.availabilityBy= obj.availabilityBy;
+    this.totalFloors=obj.totalFloors;
+    this.PropertyFloor=obj.PropertyFloor;
+    this.propertyArea= obj.propertyArea;
+    this.poojaRoom= obj.poojaRoom;
+    this.servantRoonm= obj.servantRoonm;
+    this.noofCoveredParking=obj.noofCoveredParking;
+    this.noOfOpenParking=obj.noOfOpenParking;
+    this.description= obj.description;
+    this.imageUrls=obj.imageUrls;
+    this.extras=obj.extras;
+
+    }
+}
+module.exports=property
