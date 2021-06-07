@@ -1,0 +1,1125 @@
+buy.service.ts/////
+
+
+
+
+import { Injectable } from '@angular/core';
+
+import { PropertyData } from '../property';
+import { UserData } from '../userdata';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Location } from '../location';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BuyService {
+  url1 = 'http://localhost:3000/user/buy'
+  url2 = 'http://localhost:3000/user/view/'
+  url3 = 'http://localhost:3000/user/get'
+  url4 = 'http://localhost:3000/user/search'
+  url5 = "http://localhost:3000/user/update/"
+  url = "http://localhost:3000/user/wishlist/"
+
+  constructor(private http: HttpClient) { }
+//to get all property data
+  buy():Observable<PropertyData[]>{
+    return <Observable<PropertyData[]>> this.http.get(this.url1);
+  }
+  //to get the property data of the specified property Id
+  view(propertyId):Observable<PropertyData[]>{
+    return <Observable<PropertyData[]>> this.http.get(this.url2+propertyId);
+  }
+  //to get all the user data
+  getuserdata():Observable<UserData[]>{
+    return <Observable<UserData[]>> this.http.get(this.url3);
+  }
+  //to get the location array
+  property_location():Observable<Location[]>{
+    return <Observable<Location[]>> this.http.get(this.url4)
+  }
+
+  //to add to wishlist
+  checkWish(uid, pid, state): Observable<any> {
+    console.log(this.url5 + uid + "/" + pid + "/" + state)
+    return <Observable<any>>this.http.get(this.url5 + uid + "/" + pid + "/" + state)
+  }
+  //to access the wishlisted property
+  wish(userId):Observable<PropertyData[]>{
+    return <Observable<PropertyData[]>> this.http.get(this.url+userId)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+css/////
+
+
+
+
+.example-sidenav{
+display:flex;
+align-items: center;
+justify-content:center;
+width:300px;
+padding-left:1%;
+padding-bottom: 1%
+}
+
+.nav-container{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: 10px;
+}
+mat-sidenav-container{
+    height: 94%;
+}
+mat-sidenav{
+  
+    margin: 25px;
+    width:240px;
+
+}
+mat-sidenav{
+    width: 280px;
+    flex-direction: column;
+}
+.example-container{
+    display: flex;
+}
+.example-container > *{
+    width: 100%;
+}
+.mat-radio-button ~ .mat-radio-button{
+    margin-left:15px;
+}
+.inner{
+    overflow: hidden;
+}
+.inner img{
+    transition: all 1.5s ease;
+}
+.inner:hover img{
+    transform: scale(1.5    )
+}
+
+.example-card {
+    max-width: 480px;
+    max-height: 500px;
+  }
+
+  #amenities{
+    width: 1000px;
+  }
+
+  .example-card:hover {
+    transform: scale(1.05   )
+  }
+  
+.example-header-image {
+    background-image: url("../../../assets/h8.jpg");
+     background-size: cover; 
+  }
+
+  .center{
+      text-align: center
+  }
+
+  mat-sidenav-content{
+      padding:25px
+  }
+  .inner {
+      overflow: hidden;
+  }
+  .inner img{
+      transition:all 1.5s ease;
+  }
+  .inner:hover img{
+      transform:scale(1.5)
+  }
+
+.box-1{
+    border-radius: 250px;
+    width: 100%;
+}
+.search-image{
+    background-size: cover;
+}
+
+
+
+.rcorners2 {
+
+    border-radius: 10px solid #000000
+  }
+
+
+
+  .loading-indicator{  
+    overflow: show;
+    margin-top: 40px;   
+    margin-right: 5px;
+    margin-left: 350px;
+    align-items: center
+}
+
+.card-color{
+    background-color:rgb(240, 240, 240)
+
+}
+::ng-deep .mat-tooltip{
+    background-color:black;
+    color:white;
+    height: 50%;
+    font-size: 13px;
+}
+
+
+
+
+
+
+/////html
+
+
+
+<!-- <img src="../../../assets/house3.jpg" alt="Avatar of a House"> -->
+
+<!-- <div class="row" *ngIf="view else v1"> -->
+
+    <!-- <div class="nav-container container-fluid"> -->
+        <!-- <mat-sidenav-container> -->
+            <!-- <mat-sidenav mode="side" opened={{side}} class="example-sidenav"> -->
+
+                <br>
+                <br>
+                <br>
+
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Enter the Area" [(ngModel)]="area" (change)="filter_func()">
+                </mat-form-field>
+                <br>
+                <br>
+                <label>Property For:</label>
+                <br>
+                <br>
+                <mat-radio-group aria-labelledby="Property For:" [(ngModel)]="sale_rent" (change)="filter_func()">
+                    <mat-radio-button value="Sale">Sale</mat-radio-button>
+                    <mat-radio-button value="Rent">Rent</mat-radio-button>
+                    <mat-radio-button value="Both">Both</mat-radio-button>
+                </mat-radio-group>
+                <br>
+                <label>Property Type:</label>
+                <br>
+                <mat-radio-group aria-labelledby="Property Type:" [(ngModel)]="prop_type" (change)="filter_func()">
+                    <mat-radio-button value="House">House</mat-radio-button>
+                    <mat-radio-button value="Apartment">Apartment</mat-radio-button>
+                    <mat-radio-button value="Both">Both</mat-radio-button>
+                </mat-radio-group>
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Bedrooms:" [(ngModel)]="bedroom" (change)="filter_func()" type="number" min="0" oninput="validity.valid||(value='')"
+                        #id5>
+                    <mat-icon matSuffix>king_bed</mat-icon>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Bathrooms:" [(ngModel)]="bathroom" (change)="filter_func()" min="0" oninput="validity.valid||(value='')"
+                        type="number">
+                    <mat-icon matSuffix>bathtub</mat-icon>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Min Amount:" [(ngModel)]="min_amt" (change)="filter_func()" min="0" oninput="validity.valid||(value='')"
+                        type="number">
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Max Amount:" [(ngModel)]="max_amt" (change)="filter_func()" min="0" oninput="validity.valid||(value='')"
+                        type="number">
+                </mat-form-field>
+                <br>
+                <div class="example-button-row">
+                    <button type="reset" mat-stroked-button class=" btn-primary" color="primary" (click)="clear_filters()" matTooltip="Click here to clear filters"
+                        matTooltipPosition="right" matTooltipClass="mat-tooltip">Clear Filters
+                    
+                    </button>
+                </div>
+                <br>
+                <br>
+            <!-- </mat-sidenav> -->
+
+            <!-- <mat-sidenav-content> -->
+
+                <div class="loading-indicator">
+                    <mat-spinner *ngIf=showspinner></mat-spinner>
+                </div>
+
+
+                <br>
+                <br>
+
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-4" *ngFor="let p of propertyArr">
+                            <mat-card style="background-color:rgb(220, 239, 245)">
+                                <mat-card-header>
+                                    <div mat-card-avatar class="example-header-image">
+                                        <img mat-card-avatar src="{{p.imageUrls}}" alt="Avatar of a House">
+                                    </div>
+                                    <mat-card-title>
+
+                                        {{p.price | currency :'INR':'symbol'}}
+
+
+                                        <button mat-icon-button matSuffix (click)="click(p.propertyId,p.status_wishlist)" (click)="p.status_wishlist=!p.status_wishlist"
+                                            *ngIf="userName;else see" [attr.aria-label]="'wishlist icon'" [attr.aria-pressed]="clicked">
+                                            <mat-icon color="warn">{{p.status_wishlist ? 'favorite' : 'favorite_border'}}</mat-icon>
+                                        </button>
+                                        <ng-template #see>
+                                            <button mat-icon-button matSuffix (click)="access('add this property to wishlist')" [attr.aria-label]="'wishlist icon'" [attr.aria-pressed]="clicked">
+                                                <mat-icon color="warn">favorite_border</mat-icon>
+                                            </button>
+                                        </ng-template>
+                                    </mat-card-title>
+                                    <mat-card-subtitle>For {{p.propertyType}}</mat-card-subtitle>
+                                </mat-card-header>
+                                <div class="inner">
+                                    <img mat-card-image src="{{p.imageUrls}}" alt="Photo of a House" height="150px" width="200px" class="rcorners2">
+                                </div>
+
+                                <mat-card-content>
+
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">{{p.propertyArea}}sq.ft</div>
+                                        <div class="col-md-6">{{p.noOfBedrooms}}Bhk{{p.buildingType}}</div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-6">{{p.furnishing}}</div>
+                                        <div class="col-md-6">{{p.availability}}</div>
+
+                                    </div>
+
+
+
+                                    <mat-card-actions>
+
+
+
+
+                                        <ng-template #owner>
+                                            <span>Name: {{owner_name}}</span>
+                                            <br>
+                                            <span>Contact Number: {{owner_contact}}</span>
+                                            <br>
+                                            <span>Email-Id: {{owner_emailId}}</span>
+                                        </ng-template>
+
+                                        <div class="center">
+                                            <button mat-stroked-button color="primary" layout-align="center" (click)="openDialog(owner,p)" matTooltip="Click here to Contact Owner"
+                                                matTooltipPosition="right">Contact Owner</button>
+                                            <br>
+                                            <br>
+                                        </div>
+
+                                        <div class="center">
+
+
+                                            <button mat-flat-button class="btn btn-primary" *ngIf="userLoggedIn;else go" layout-align="center" (click)="redirectfunc(p.propertyId)"
+                                                matTooltip="Click here to View details" matTooltipPosition="below" matTooltipClass="mat-tooltip">View Details</button>
+                                            <br>
+                                        </div>
+
+                                        <ng-template #go>
+                                            <div class="center">
+                                                <button mat-flat-button color="primary" (click)="snackView()" matTooltip="Click here to View Details" matTooltipPosition="below"
+                                                    matTooltipClass="mat-tooltip">View Details</button>
+
+                                                <br>
+                                            </div>
+                                        </ng-template>
+                                    </mat-card-actions>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card class="example-card card-shadow" *ngIf="newCard">
+
+                            </mat-card>
+
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <button (click)="side_show()" class="center">
+                    Filters
+                </button>
+                <br>
+                <br>
+            <!-- </mat-sidenav-content> -->
+        <!-- </mat-sidenav-container> -->
+    <!-- </div> -->
+<!-- </div> -->
+<br>
+<br>
+<!-- <ng-template #v1>
+    <mat-card>
+        <mat-card-header>
+
+        </mat-card-header>
+        <mat-card-content>
+            <mat-grid-list cols=3 gutterSize="20px">
+                <mat-grid-tile colspan=1>
+                    <img mat-card-image src="{{propertyArr.imageUrls}}" class="example-header-images" alt="House image">
+                </mat-grid-tile>
+                <mat-grid-tile colspan=2>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-card-header>
+                                    <mat-card-title style="text-align: center">Description</mat-card-title>
+                                </mat-card-header>
+                                <br> {{propertyArr.description}}
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                            </div>
+                            <div class="col-md-4">
+                                Price:{{propertyArr.price | currency :'INR':'symbol'}}
+                            </div>
+                            <div class="col-md-4">
+                                Security Deposit:{{propertyArr.Advance | currency :'INR':'symbol'}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                Transaction Type:{{propertyArr.transactionType}}
+                            </div>
+                            <div class="col-md-4">
+                                Age:{{propertyArr.ageOfProperty}}
+                            </div>
+                            <div class="col-md-4">
+                                Availability:{{propertyArr.availabilityBy}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                Bedrooms:
+                                <span *ngFor='let in of counter(propertyArr.noOfBedrooms)'>
+                                    <mat-icon>king_bed</mat-icon>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+
+                                Bathrooms:
+                                <span *ngFor='let in of counter(propertyArr.noOfBathrooms)'>
+                                    <mat-icon>bathtub</mat-icon>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+
+                                Balconies:
+                                <span *ngFor='let in of counter(propertyArr.noOfBalconies)'>
+                                    <mat-icon>king_bed</mat-icon>
+                                </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <ng-template #owner>
+                                <span>Name: {{owner_name}}</span>
+                                <br>
+                                <span>Contact Number: {{owner_contact}}</span>
+                                <br>
+                                <span>Email-Id: {{owner_emailId}}</span>
+                            </ng-template>
+                            <div class="col-md-8 offset-2">
+                                <button mat-raised-button style="align-content: center" (click)="openDialog(owner,propertyArr)" class="btn-primary btn-block">Contact owner</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card-content>
+    </mat-card>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-3 offset-1">
+            <mat-card class="example-card" id="features">
+                <mat-card-header>
+                    <mat-card-title>Features</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        <mat-list id="features">
+                            <mat-list-item>
+                                <div class="d-inline bg-primary text-white text-center box-1">Property Type : {{propertyArr.propertyType}}</div>
+                            </mat-list-item>
+                            <mat-list-item>
+                                <div class="d-inline bg-primary text-white text-center box-1">Ownership : {{propertyArr.propertyOwnership}}</div>
+                            </mat-list-item>
+                            <mat-list-item>
+                                <div class="d-inline bg-primary text-white text-center box-1">Building Type : {{propertyArr.buildingType}}</div>
+                            </mat-list-item>
+                            <mat-list-item>
+                                <div class="d-inline bg-primary text-white text-center box-1">Furnishing : {{propertyArr.furnishing}}</div>
+                            </mat-list-item>
+                            <mat-list-item>
+                                <div class="d-inline bg-primary text-white text-center box-1">Availability : {{propertyArr.availability}}</div>
+                            </mat-list-item>
+                        </mat-list>
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-md-3 ">
+            <mat-card class="example-card" id="highlights">
+                <mat-card-header>
+                    <mat-card-title>Highlights</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        <mat-list id="highlights">
+                            <div class="row">
+                                <div class="col-md-4" *ngIf="propertyArr.WaterSupplyFor24Hours">
+                                    <div class="icon text-center">
+                                        <mat-icon>waves</mat-icon>
+                                        <br>
+                                        <span class="caption">24 Hours Water Supply</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.CloseToSchool">
+                                    <div class="icon text-center">
+                                        <mat-icon>local_library</mat-icon>
+                                        <br>
+                                        <span class="caption">Close to School</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.CloseToHospital">
+                                    <div class="icon text-center">
+                                        <mat-icon>local_hospital</mat-icon>
+                                        <br>
+                                        <span class="caption">Close to Hospital</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.CloseToRailwayStation">
+                                    <div class="icon text-center">
+                                        <mat-icon>directions_railway</mat-icon>
+                                        <br>
+                                        <span class="caption">Close to Railway Station</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.CloseToBusStand">
+                                    <div class="icon text-center">
+                                        <mat-icon>directions_bus</mat-icon>
+                                        <br>
+                                        <span class="caption">Close to Bus Stand</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.CloseToAirport">
+                                    <div class="icon text-center">
+                                        <mat-icon>local_airport</mat-icon>
+                                        <br>
+                                        <span class="caption">Close to Airport</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.CloseToBank">
+                                    <div class="icon text-center">
+                                        <mat-icon>account_balance</mat-icon>
+                                        <br>
+                                        <span class="caption">Close to Bank</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.CloseToPark">
+                                    <div class="icon text-center">
+                                        <mat-icon>nature_people</mat-icon>
+                                        <br>
+                                        <span class="caption">Close to Park</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-list>
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-md-3 ">
+            <mat-card class="example-card" id="amenities">
+                <mat-card-header>
+                    <mat-card-title>Amenities</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        <mat-list id="highlights">
+                            <div class="row">
+                                <div class="col-md-4" *ngIf="propertyArr.lifts">
+                                    <div class="icon text-center">
+                                        <mat-icon></mat-icon>
+                                        <br>
+                                        <span class="caption">LIFTS</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.ac">
+                                    <div class="icon text-center">
+                                        <mat-icon></mat-icon>
+                                        <br>
+                                        <span class="caption">AC</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.heater">
+                                    <div class="icon text-center">
+                                        <mat-icon></mat-icon>
+                                        <br>
+                                        <span class="caption">HEATER</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.maintenenceStaff">
+                                    <div class="icon text-center">
+                                        <mat-icon>person</mat-icon>
+                                        <br>
+                                        <span class="caption">MAINTENANCE</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.visitorParking">
+                                    <div class="icon text-center">
+                                        <mat-icon>local_parking</mat-icon>
+                                        <br>
+                                        <span class="caption">PARKING</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.IntercomFacility">
+                                    <div class="icon text-center">
+                                        <mat-icon>settings_remo</mat-icon>
+                                        <br>
+                                        <span class="caption">INTERCOM</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.wifi">
+                                    <div class="icon text-center">
+                                        <mat-icon>wifi</mat-icon>
+                                        <br>
+                                        <span class="caption">WIFI</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.fireAlarm">
+                                    <div class="icon text-center">
+                                        <mat-icon></mat-icon>
+                                        <br>
+                                        <span class="caption">FIRE ALARM</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.WaterPurifier">
+                                    <div class="icon text-center">
+                                        <mat-icon></mat-icon>
+                                        <br>
+                                        <span class="caption">WATER PURIFIER</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="propertyArr.PowerBackup">
+                                    <div class="icon text-center">
+                                        <mat-icon></mat-icon>
+                                        <br>
+                                        <span class="caption">POWER BACKUP</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-list>
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+</ng-template> -->
+
+
+
+
+
+
+
+//////////////ts
+
+
+
+import { Component, OnInit, Inject, TemplateRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BuyService } from './buy.service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatSnackBar } from '../../../../node_modules/@angular/material';
+import { PropertyData } from '../property';
+import { Location } from '../location';
+
+
+@Component({
+  selector: 'app-buyer',
+  templateUrl: './buyer.component.html',
+  styleUrls: ['./buyer.component.css']
+})
+
+export class BuyerComponent implements OnInit {
+  view_propertyId:string;
+  propertyArr: PropertyData[] = [];
+  errorMessage:string;
+  propArr: PropertyData[]=[];
+  view:Boolean=true;
+  view_obj:String;
+  owner_name:String;
+  owner_contact:Number;
+  owner_emailId:String;
+  userName:string;
+  userLoggedIn;
+  valArr:string[];
+  bedroom:Number;
+  bathroom:Number;
+  min_amt:Number;
+  max_amt:Number;
+  area:string;
+  sale_rent:string;
+  prop_type:string;
+  location_array:Location[]=[];
+  propertyNew=[];
+  state:Number;
+  one:boolean=true;
+ side:boolean=false;
+  hide:boolean=false;
+  showspinner:boolean=false
+  newCard:boolean=false;
+  constructor(private buyService: BuyService, public dialog: MatDialog, private route: ActivatedRoute, private _snackBar: MatSnackBar,) { }
+
+  _id
+
+  ngOnInit() {
+
+    this.load()
+    this.view = true;
+    this.get_property_details()
+    this.get_property_location()
+    this.userName=sessionStorage.getItem('name')
+   if(this.userName){
+     this.userLoggedIn=true;
+     this.wishing()
+   }else{
+     this.userLoggedIn=false;  
+   }
+}
+reload(){
+  for(let p of this.propertyArr){
+    for(let q of this.propertyNew){
+      if(p.propertyId==q.propertyId){
+        p.status_wishlist=true;
+        break
+      }else{
+        p.status_wishlist=false;
+      }
+    }
+  }
+}
+
+  //this function opens a snackbar to display warning message to ask your to login to wishlist
+  access(data) {
+    this.openSnackBar('Please login to ' + data, 'OK');
+  }
+
+  //this wishlists a property on clcik of the heart and undo it on the next click
+  click(pid, state) {
+    if (state == 1) {
+      state = 0
+      this.openSnackBar(pid + ' Removed from wishlist', 'OK')
+    } else if (state == 0) {
+      state = 1
+      this.openSnackBar(pid + ' Added to wishlist', 'OK')
+    }
+    let userId = sessionStorage.getItem('userId')
+
+    this.buyService.checkWish(userId, pid, state).subscribe(
+      (success) => {
+        this.wishing()
+      }
+    )
+  }
+//to obtains the property array and populate the array
+  get_property_details() {
+    this.buyService.buy().subscribe(
+
+      response => {
+        console.log(response)
+        this.propertyArr = response;
+        this.propArr = response
+      }, err => this.errorMessage = err.error.message
+    )
+  }
+//to get the location values
+  get_property_location() {
+    this.buyService.property_location().subscribe(
+      response => {
+        this.location_array = response
+        this.set_parameters()
+      }
+    )
+  }
+
+  //to open a dialog box on click of contact owner
+  openDialog(templateref: TemplateRef<any>, property_obj: any) {
+    this.buyService.getuserdata().subscribe(
+      response => {
+        response.forEach(element => {
+          if (property_obj.sellerId == element.userId) {
+            this.owner_name = element.name
+            this.owner_contact = element.contactNo
+            this.owner_emailId = element.emailId
+          }
+        });
+      }
+    )
+    this.dialog.open(templateref);
+  }
+
+  // this is to open a snackbar
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+      verticalPosition: 'top',
+      panelClass: ['snackbar-position'],
+      horizontalPosition: "center"
+    });
+  }
+
+
+  redirectfunc(propertyId) {
+    this.view = false
+    this.buyService.view(propertyId).subscribe(
+      response => {
+        this.propertyArr = response;
+      }, err => this.errorMessage = err.error.message
+    )
+  }
+
+
+  //
+  counter(i: number) {
+    return new Array(i);
+  }
+
+  //this is to display a snackbar if user is not logged in 
+  snackView() {
+    this.openSnackBar('Please login to view details', 'OK');
+  }
+
+
+  set_parameters() {
+    this.route.params.subscribe(param => {
+      this.area = param['location']
+      this.filter_func()
+    })
+  }
+
+  //Filtering the property based on selected data
+  property_for(data) { this.propertyArr = this.propertyArr.filter(_ => _.propertyType == data) }
+  property_type(data) { this.propertyArr = this.propertyArr.filter(_ => _.buildingType == data) }
+  bedrooms(data) { this.propertyArr = this.propertyArr.filter(_ => _.noOfBedrooms == data) }
+  bathrooms(data) { this.propertyArr = this.propertyArr.filter(_ => _.noOfBathrooms == data) }
+  minAmount(data) { this.propertyArr = this.propertyArr.filter(_ => _.price >= data) }
+  maxAmount(data) { this.propertyArr = this.propertyArr.filter(_ => _.price <= data) }
+  areas(data: string) {
+    let pincode: Number
+
+    this.location_array.forEach(element => {
+      if (element.area.toLowerCase() == data.toLowerCase()) {
+        pincode = element.pincode
+      }
+    });
+    this.propertyArr = this.propertyArr.filter(_ => _.pincode == pincode)
+  }
+
+
+
+  //to filter the available properties based on the options available
+  filter_func() {
+    this.propertyArr = this.propArr;
+    if (this.area) {
+      this.areas(this.area);
+    }
+    if (this.sale_rent) {
+      if (this.sale_rent != "Both") {
+        this.property_for(this.sale_rent)
+      }
+    }
+    if (this.prop_type) {
+      if (this.prop_type != "Both") {
+        this.property_type(this.prop_type)
+      }
+    }
+    if (this.min_amt) {
+      this.minAmount(this.min_amt)
+    }
+    if (this.max_amt) {
+      this.maxAmount(this.max_amt)
+    }
+    if (this.bedroom) {
+      this.bedrooms(this.bedroom)
+    }
+    if (this.bathroom) {
+      this.bathrooms(this.bathroom)
+    }
+  }
+
+
+  //to clear all the applied filters
+  clear_filters() {
+    this.propertyArr = this.propArr;
+    this.bathroom = null;
+    this.bedrooms = null;
+    this.minAmount = null;
+    this.maxAmount = null;
+    this.area = null;
+    this.prop_type = null;
+    this.sale_rent = null;
+  }
+
+
+
+
+
+  //to bring the wishlisted items from the wishlist array
+  wishing() {
+    this.buyService.wish(sessionStorage.getItem('userId')).subscribe(
+      (success) => {
+        this.propertyNew = success
+        if (this.one) {
+          this.reload()
+          this.one = false;
+        }
+      }
+    )
+  }
+
+
+  //to show the load spinner
+  load() {
+    this.showspinner = true;
+    setTimeout(() => {
+      this.showspinner = false
+    }, 1500)
+  }
+
+// to open a side navbar on click of a button
+  side_show(){
+    this.side=!this.side
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+updateprofile.css//////
+
+.my-form{
+    min-width: 200px;
+    max-width: 500px;
+    width: 100%;
+  }
+   
+  .full-width {
+    width: 100%;
+  }
+  ::ng-deep .mat-tooltip{
+    background-color:black;
+    color:white;
+    height: 50%;
+    font-size: 13px;
+}
+
+
+
+html////
+
+
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <h4 class="text-center">Update your Profile here</h4>
+        <mat-grid-list cols="4" rowHeight="210px">
+            <mat-grid-tile [colspan]=3 [rowspan]=2>
+                <mat-card class="my-card offset-4">
+                    <h2 align="center" class="fontcolor">Update Profile</h2>
+                    <mat-card-content>
+                        <form class="my-form" [formGroup]="updateForm">
+                            <mat-form-field class="full-width">
+                                <mat-label>New Name</mat-label>
+                                <input type="text" matInput placeholder="Name" name="name" required formControlName="name">
+
+                                <mat-error *ngIf=updateForm.controls.name.errors?.pattern class="text-danger" id="nameError">User name should contain only alphabets</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>New Contact No</mat-label>
+                                <input type="number" matInput placeholder="Contact" name="contactNo" min="0" min="0" oninput="validity.valid||(value='')"
+                                    required formControlName="contactNo">
+
+                                <mat-error *ngIf=updateForm.controls.contactNo.errors?.pattern class="text-danger" id="ContactNoError">Please enter a 10 digit contact number</mat-error>
+                            </mat-form-field>
+
+                        </form>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button (click)="update_profile()" color="primary" matTooltip="Click here to Update Profile" matTooltipPosition="below"
+                            matTooltipClass="mat-tooltip">UPDATE</button>
+                        <br />
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////ts
+
+
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '../../../node_modules/@angular/forms';
+import { UpdateprofileService } from './updateprofile.service';
+import { MatSnackBar } from '../../../node_modules/@angular/material';
+import { Router } from '../../../node_modules/@angular/router';
+@Component({
+  selector: 'app-updateprofile',
+  templateUrl: './updateprofile.component.html',
+  styleUrls: ['./updateprofile.component.css']
+})
+export class UpdateprofileComponent implements OnInit {
+  updateForm: FormGroup;
+  contactNo: number;
+  name: string;
+  password: string;
+  errorMessage: string;
+  userId: string;
+  constructor(private fb: FormBuilder, private service: UpdateprofileService, private _snackBar: MatSnackBar, private router: Router) { }
+
+  ngOnInit() {
+    this.updateForm = this.fb.group({
+      name: ['', Validators.pattern(/^[a-zA-Z]+( )*[a-zA-Z]*( )*[a-zA-Z]+$/)],
+      contactNo: ['', Validators.pattern(/^[0-9]{10}$/)]
+    })
+  }
+  //opens up a snackbar on successful updation
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+      verticalPosition: 'top',
+      panelClass: ['snackbar-position'],
+      horizontalPosition: "center"
+    });
+  }
+  //to update the contactno and name of  a user
+  update_profile() {
+    this.userId = sessionStorage.getItem('userId')
+    this.service.update_profile(this.updateForm.value, this.userId).subscribe(
+      (res) => {
+        this.openSnackBar('Updated Successfully', 'OK');
+        sessionStorage.setItem("name", this.updateForm.value.name)
+        sessionStorage.setItem("contactNo", this.updateForm.value.contactNo)
+        this.router.navigate(['/profile'])
+        this.errorMessage = null;
+      },
+      (err) => {
+        this.errorMessage = err.error.message
+      }
+    )
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/////service.ts
+
+
+
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from '../../../node_modules/rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UpdateprofileService {
+
+  updateurl = "http://localhost:3000/user/update_profile/"
+  constructor(private http:HttpClient) { }
+  //to update profile of user
+  update_profile(updateform,userId):Observable<any>{
+    return  <Observable<any>> this.http.put(this.updateurl+userId,updateform)
+  }
+}
+
+
+
+
+
+
+
+
+
